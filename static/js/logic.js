@@ -21,8 +21,7 @@ function createMarkers(response){
 			var depth = response.features[i].geometry.coordinates[2];
 			
 			//inset data in the popup
-			var date = response.features[i].properties.time
-			var time = response.features[i].properties.time
+			var date = new Date(response.features[i].properties.time*1000)
 			var loc = response.features[i].properties.place
 			var mag = response.features[i].properties.mag
 
@@ -34,7 +33,7 @@ function createMarkers(response){
             color: 'black',
             fillColor: colorDepth(depth),
             radius: 7000 * response.features[i].properties.mag
-    }).bindPopup(`<p align = "left"> <strong>Date:</strong> ${date} <br> <strong>Time:</strong>${time} <br>
+    }).bindPopup(`<p align = "left"> <strong>Date:</strong> ${date} <br>
      <strong>Location:</strong> ${loc} <br> <strong>Magnitude:</strong> ${mag} </p>`).addTo(myMap)
 	};
     //newMarker = L.layer
