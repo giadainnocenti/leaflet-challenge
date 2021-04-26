@@ -36,8 +36,8 @@ function createMarkers(response){
     }).bindPopup(`<p align = "left"> <strong>Date:</strong> ${date} <br>
      <strong>Location:</strong> ${loc} <br> <strong>Magnitude:</strong> ${mag} </p>`).addTo(myMap)
 	};
-    //newMarker = L.layer
 };
+//function to picke the color
 function colorDepth(depth){
 	switch(true){
             case (depth > -10 && depth < 10):
@@ -61,6 +61,32 @@ function colorDepth(depth){
         };
 		return color
 };
+newMarker = L.layer
+//function to create the legend
+function CreateLegend(){
+    var div = L.DomUtil.create('div', 'info legend');
+    var grades = ['-10-10', '10-30', '30-50', '50-70', '70-90', '90+'];
+    var colors = [
+        'rgb(19, 235, 45)',
+        'rgb(138, 206, 0)',
+        'rgb(186, 174, 0)',
+        'rgb(218, 136, 0)',
+        'rgb(237, 91, 0)',
+        'rgb(242, 24, 31)'
+        ];
+    var labels = [];
+    // loop through our density intervals and generate a label with a colored square for each interval
+    grades.forEach(function(grade, index){
+        labels.push("<div class = 'row'><li style=\"background-color: " + colors[index] +  "; width: 10px"+ "; height: 10px" + "\"></li>" + "<li>" + grade + "</li></div>");
+    })
+  
+    div.innerHTML += "<ul>" + labels.join("") +"</ul>";
+    return div;
+};
+//adding a legend to the map
+var legend = L.control({position: 'bottomright'});
+legend.onAdd = CreateLegend
+legend.addTo(myMap)
 
 //call to fetch all the data to show on the map
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson").then(createMarkers);
